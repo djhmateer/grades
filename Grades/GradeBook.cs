@@ -29,6 +29,7 @@ namespace Grades {
             return stats;
         }
 
+       // Backing field (private)
         private string _name;
 
         public string Name {
