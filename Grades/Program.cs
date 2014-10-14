@@ -19,8 +19,8 @@ namespace Grades {
             book.NameChanged += OnNameChanged;
             book.NameChanged += OnNameChanged;
             book.NameChanged += OnNameChanged2;
-            // ahh would wipe out the previous ones
-            book.NameChanged = new NameChangedDelegate(OnNameChanged2);
+            book.NameChanged -= OnNameChanged;
+
 
             book.Name = "Allen's Book";
             WriteNames(book.Name);
@@ -30,14 +30,15 @@ namespace Grades {
             Console.WriteLine(stats.HighestGrade);
         }
 
-        private static void OnNameChanged2(string oldvalue, string newvalue) {
-            Console.WriteLine("***");
+        private static void OnNameChanged2(object sender, NameChangedEventArgs args){
+            Console.WriteLine("**");
         }
 
-        // This method will execute when a 
-        private static void OnNameChanged(string oldvalue, string newvalue) {
-            Console.WriteLine("Name changed from {0} to {1}", oldvalue, newvalue);
+        private static void OnNameChanged(object sender, NameChangedEventArgs args){
+            Console.WriteLine("Name changed from {0} to {1}",
+                args.OldValue, args.NewValue);
         }
+
 
         private static void WriteBytes(int value) {
             byte[] bytes = BitConverter.GetBytes(value);

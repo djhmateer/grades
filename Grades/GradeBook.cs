@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace Grades {
-    public delegate void NameChangedDelegate(string oldValue, string newValue);
+    public delegate void NameChangedDelegate(object sender, NameChangedEventArgs args);
     public class GradeBook {
         public GradeBook(string name = "There is no name") {
             Name = name;
@@ -29,7 +29,7 @@ namespace Grades {
             return stats;
         }
 
-       // Backing field (private)
+        // Backing field (private)
         private string _name;
 
         public string Name {
@@ -41,16 +41,20 @@ namespace Grades {
                     var oldValue = _name;
                     _name = value;
                     // Announce to world that something has changed
-                    if (NameChanged != null) {
-                        // It has no idea what will be called, only that the signature will be string oldValue, string newValue
-                        NameChanged(oldValue, value);
+                    if (NameChanged != null){
+                        var args = new NameChangedEventArgs{
+                            OldValue = oldValue,
+                            NewValue = value
+                        };
+                        // Invoke the delegate
+                        NameChanged(this, args);
                     }
                 }
             }
         }
 
         // Field of type NameChangedDelegate
-        public NameChangedDelegate NameChanged;
+        public event NameChangedDelegate NameChanged;
 
         //if (_name != value) {
         //    var oldValue = _name;
